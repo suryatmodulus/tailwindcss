@@ -127,7 +127,7 @@ function help({ message, usage, commands, options }) {
   - [x] Init to custom path
   - [x] make --no-autoprefixer work
   - [x] Support writing to stdout
-  - [ ] Add logging for when not using an input file
+  - [x] Add logging for when not using an input file
   - [ ] Prebundle peer-dependencies
   - [ ] Make minification work
   - [x] Handle -i when file doesn't exist
@@ -303,7 +303,9 @@ function build() {
   let shouldWatch = args['--watch']
   let shouldMinify = args['--minify']
 
-  if (input && !fs.existsSync((input = path.resolve(input)))) {
+  if (!input) {
+    console.warn('[deprecation] Running tailwindcss without -i, please provide an input file.')
+  } else if (!fs.existsSync((input = path.resolve(input)))) {
     console.error(`Specified input file ${args['--input']} does not exist.`)
     process.exit(9)
   }
